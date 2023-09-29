@@ -2,7 +2,8 @@ FROM quay.io/centos/centos:stream9
 
 RUN dnf install -y \
 	dnf-plugin-config-manager \
-	epel-release
+	epel-release && \
+	dnf clean all
 
 RUN dnf config-manager -y --set-enabled crb
 RUN dnf -y copr enable rhcontainerbot/qm centos-stream-9
@@ -63,13 +64,15 @@ RUN dnf install -y \
 	golang-github-cpuguy83-md2man \
 	telnet \
 	net-tools \
-	iproute
+	iproute && \
+	dnf clean all
 
 WORKDIR /root
 
 RUN gem install ruby-dbus
 RUN dnf -y copr enable mperina/hirte-snapshot centos-stream-9
-RUN dnf -y install bluechi bluechi-agent bluechi-ctl
+RUN dnf -y install bluechi bluechi-agent bluechi-ctl && \
+    dnf clean all
 RUN alternatives --install /usr/bin/python python /usr/bin/python3 1
 RUN npm install markdownlint-cli2 --global
 
